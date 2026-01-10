@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Мой профиль</h1>
+
+<hr>
+
+<h2>{{ last_name }} {{ first_name }}</h2>
+
+{% if profile.avatar %}
+        <img src="{{ user.profile.avatar.url }}"
+     style="border-radius: 50%; border: 3px solid #4CAF50;"
+     width="150">
+
+    {% else %}
+        <p>Аватар не установлен</p>
+{% endif %}
+<p>Загрузить новый: {{ profile_form.avatar }}</p>
+
+<p>Email: {{ email }}</p>
+<p>Возраст: {{ user.profile.age }}</p>
+<p>Семейное положение: {{ user.profile.family_status }}</p>
+<p>Описание профиля: {{ user.profile.bio }}</p>
+
+<a href="{% url 'edit_profile' %}">Редактировать профиль✏️</a>
+
+{% endblock %}
