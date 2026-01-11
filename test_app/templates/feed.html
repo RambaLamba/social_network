@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Лента</h1>
+
+<a href="{% url 'new_publication' %}">Опубликовать новую запись</a>
+
+<hr>
+
+{% for publication in publications %}
+    <div style="margin-bottom: 30px;">
+        <h3>{{ publication.title }}</h3>
+        <p><small>Опубликовано: {{ publication.created_at|date:"d.m.Y H:i" }}</small></p>
+        {% if publication.image %}
+            <img src="{{ publication.image.url }}" style="max-width: 40%; height: auto;" alt="Изображение">
+        {% endif %}
+        <p>{{ publication.text }}</p>
+        <p><strong>Автор:</strong> {{ publication.profile.user.first_name }} {{ publication.profile.user.last_name }}</p>
+    </div>
+    <hr>
+{% empty %}
+    <p>Пока нет ни одной публикации. Будьте первым!</p>
+{% endfor %}
+
+{% endblock %}

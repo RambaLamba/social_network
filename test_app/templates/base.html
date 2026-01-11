@@ -31,8 +31,7 @@
 <body>
     <div class="navbar">
         <a href="{% url 'home' %}">🏠 Главная</a>
-        <a href="#">📰 Лента</a>
-        <a href="{% url 'upload' %}">📤 Загрузить</a>
+        <a href="{% url 'feed' %}">📰 Лента</a>
 
         <div class="user-info">
             {% if user.is_authenticated %}

@@ -26,9 +26,25 @@ class Image(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='images')
     title = models.CharField(max_length=255)
     image = models.ImageField(upload_to='posts/%Y/%m/%d/',
-                              verbose_name='Изображения')
+                              verbose_name='Изображения',
+                              blank=True,
+                              null=True)
     created_at = models.DateTimeField(default=timezone.now)
     description = models.CharField(max_length=2048, blank=True)
 
     def __str__(self):
         return f"Image {self.title} - {self.profile.user.username}"
+
+
+class Publication(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='publications')
+    title = models.CharField(max_length=255)
+    text = models.TextField()
+    created_at = models.DateTimeField(default=timezone.now)
+    image = models.ImageField(upload_to='posts/%Y/%m/%d/',
+                              verbose_name='Изображения',
+                              blank=True,
+                              null=True)
+    
+    def __str__(self):
+        return self.title

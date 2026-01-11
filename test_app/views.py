@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import ImageForm, CustomUserCreationForm, ProfileForm, UserUpdateForm
-from .models import Profile
+from .forms import CustomUserCreationForm, ProfileForm, UserUpdateForm, PublicationForm
+from .models import Profile, Publication
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout, login
 
@@ -25,18 +25,9 @@ def logout_view(request):
     return redirect('home')
 
 def profile_view(request):
-    user = request.user
-    profile = user.profile
-
-    data = {
-        'user': user,
-        'profile': profile,
-        'first_name': user.first_name,
-        'last_name': user.last_name,
-        'email': user.email
-    }
-
-    return render(request, 'profile.html', data)
+    # Получаем или создаем профиль для пользователя
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    return render(request, 'profile.html', {'user': request.user, 'profile': profile})
 
 def edit_profile(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
@@ -60,16 +51,33 @@ def edit_profile(request):
         'profile': profile
     })
 
+
 @login_required
-def image_upload(request):
-    if request.method == "POST":
-        form = ImageForm(request.POST, request.FILES)
-        if form.is_valid():
-            image = form.save(commit=False)
-            image.profile = request.user.profile
-            image.save()
-
-            return redirect('profile')
-
 def upload_avatar(request):
-    pass
+    if request.method == 'POST':
+        profile = request.user.profile
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+        return redirect('profile')
+    return redirect('profile')
+
+def feed_view(request):
+    publications = Publication.objects.all().order_by('-created_at')
+    return render(request, 'feed.html', {'publications': publications})
+
+@login_required
+def new_publication(request):
+    # Получаем или создаем профиль для пользователя
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        form = PublicationForm(request.POST, request.FILES)
+        if form.is_valid():
+            publication = form.save(commit=False)
+            publication.profile = profile
+            publication.save()
+            return redirect('feed')
+    else:
+        form = PublicationForm()
+    return render(request, 'new_publication.html', {'form': form})

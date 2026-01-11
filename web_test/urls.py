@@ -17,7 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
-from test_app.views import home, image_upload, register, logout_view, profile_view, edit_profile
+from test_app.views import home, register, logout_view, profile_view, edit_profile, upload_avatar, feed_view, new_publication
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
@@ -26,7 +26,6 @@ from django.contrib.auth import views as auth_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
-    path('upload/', image_upload, name='upload'),
     path('accounts/login/', auth_views.LoginView.as_view(
             template_name='registration/login.html'
         ), name='login'),
@@ -34,6 +33,9 @@ urlpatterns = [
     path('accounts/logout/', logout_view, name='logout'),
     path('profile/', profile_view, name='profile'),
     path('edit_profile/', edit_profile, name='edit_profile'),
+    path('upload_avatar/', upload_avatar, name='upload_avatar'),
+    path('feed/', feed_view, name='feed'),
+    path('new_publication/', new_publication, name='new_publication'),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Новая публикация</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div>
+        <label for="{{ form.title.id_for_label }}">Заголовок:</label>
+        {{ form.title }}
+    </div>
+    <div>
+        <label for="{{ form.text.id_for_label }}">Текст:</label>
+        {{ form.text }}
+    </div>
+    <div>
+        <label for="{{ form.image.id_for_label }}">Изображение:</label>
+        {{ form.image }}
+    </div>
+    <button type="submit">Опубликовать</button>
+</form>
+
+<a href="{% url 'feed' %}">Назад к ленте</a>
+{% endblock %}

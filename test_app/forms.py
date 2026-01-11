@@ -1,13 +1,17 @@
 from django import forms
-from .models import Image, Profile
+from .models import Image, Profile, Publication
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
 
-class ImageForm(forms.ModelForm):
+class PublicationForm(forms.ModelForm):
     class Meta:
-        model = Image
-        fields = ('title', 'image')
+        model = Publication
+        fields = ('title', 'text', 'image')
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['image'].required = False
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -38,3 +42,4 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['first_name', 'last_name', 'email']
+

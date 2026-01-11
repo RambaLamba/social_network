@@ -5,19 +5,17 @@
 
 <hr>
 
-<h2>{{ last_name }} {{ first_name }}</h2>
+<h2>{{ user.last_name }} {{ user.first_name }}</h2>
 
-{% if profile.avatar %}
-        <img src="{{ user.profile.avatar.url }}"
-     style="border-radius: 50%; border: 3px solid #4CAF50;"
-     width="150">
-
-    {% else %}
-        <p>Аватар не установлен</p>
+{% if user.profile.avatar %}
+    <img src="{{ user.profile.avatar.url }}" alt="Аватар" width="250", style="border-radius: 60%;">
+{% else %}
+    <p>Аватар не загружен</p>
 {% endif %}
-<p>Загрузить новый: {{ profile_form.avatar }}</p>
 
-<p>Email: {{ email }}</p>
+<hr>
+
+<p>Email: {{ user.email }}</p>
 <p>Возраст: {{ user.profile.age }}</p>
 <p>Семейное положение: {{ user.profile.family_status }}</p>
 <p>Описание профиля: {{ user.profile.bio }}</p>
